@@ -15,13 +15,14 @@ function App() {
   }
 
   function handleUpdateComplete(id) {
-    setTask(tasks.map(task => task.id === id ? {...task, isCompleted: !task.isCompleted} : task));
+    setTask(tasks.map(task => task.id === id ? { ...task, isCompleted: !task.isCompleted } : task));
   }
 
   return (
     <div className="todo-app-container">
       <div className="todo-app">
         <h2>Todo App</h2>
+        {/* Adding Form */}
         <form action="#">
           <input
             type="text"
@@ -30,14 +31,15 @@ function App() {
           />
         </form>
 
+        {/* Tasklist with functions */}
         <ul className="todo-list">
-          {tasks.map(task => (
-            <li className="todo-item-container">
+          { tasks.map(task => (
+            <li key={ task.id } className="todo-item-container">
               <div className="todo-item">
-                <input type="checkbox" onClick={() => handleUpdateComplete(task.id)}/>
-                <span className="todo-item-label">{task.task_name}</span>
+                <input type="checkbox" onClick={ () => handleUpdateComplete(task.id) }/>
+                <span className="todo-item-label">{ task.task_name }</span>
               </div>
-              <button onClick={() => handleDeleteTask(task.id)} className="x-button">
+              <button onClick={ () => handleDeleteTask(task.id) } className="x-button">
                 <svg
                   className="x-button-icon"
                   fill="none"
@@ -47,7 +49,7 @@ function App() {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={ 2 }
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
@@ -56,7 +58,8 @@ function App() {
           ))}
 
         </ul>
-
+        
+        {/* function set 1 */}
         <div className="check-all-container">
           <div>
             <div className="button">Check All</div>
@@ -65,6 +68,7 @@ function App() {
           <span>3 items remaining</span>
         </div>
 
+        {/* function set 1 */}
         <div className="other-buttons-container">
           <div>
             <button className="button filter-button filter-button-active">
