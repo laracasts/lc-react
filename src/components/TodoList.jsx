@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import NoTodo from './NoTodo'
 
 function TodoList({ tasks, setTask, filter, setFilter }) {
   const [allIsCompleted, setAllIsCompleted] = useState(false)
@@ -8,40 +9,44 @@ function TodoList({ tasks, setTask, filter, setFilter }) {
   }, [tasks])
 
   function deleteTask(id) {
+    console.log(`delete task: ${id}`)
     setTask(tasks.filter(task => task.id !== id));
   }
 
   function deleteAllCompleted() {
+    console.log("delete all competed task")
     setTask(tasks.filter(task => !task.isCompleted === true))
   }
 
   function setAllIsComplete(status) {
+    console.log(`toggle ${status} to all task IsComplete`)
     setTask(tasks.map(task => { return { ...task, isCompleted: status } }))
   }
 
   function setIsComplete(id) {
+    console.log(`toggle ${id} IsComplete`)
     setTask(tasks.map(task => task.id === id ? { ...task, isCompleted: !task.isCompleted } : task));
   }
 
   function setIsEditing(id) {
+    console.log(`toggle edit status on ${id}`)
     setTask(tasks.map(task => task.id === id ? { ...task, isEditing: !task.isEditing } : { ...task, isEditing: false }));
   }
 
   function updateToDo(e, id) {
     setTask(tasks.map(task => {
-        if (task.id === id && e.target.value.trim().length !== 0) {
-          task.task_name = e.target.value
-        }
-        task.isEditing = false
-
-        return task
+      if (task.id === id && e.target.value.trim().length !== 0) {
+        console.log(`Update ${id}`)
+        task.task_name = e.target.value
       }
-    ))
+      task.isEditing = false
+
+      return task
+    } ))
   }
 
   return (
     <section>
-      {/* Tasklist with functions */}
       <ul className="todo-list">
         { tasks.map((task, index) => (
           <li key={ task.id } className="todo-item-container">
@@ -93,23 +98,24 @@ function TodoList({ tasks, setTask, filter, setFilter }) {
             </button>
           </li>
         ))}
-
       </ul>
-      
-      {/* function set 1 */}
-      <div className="check-all-container">
-        <div className='button-group'>
-          { !allIsCompleted ? (
-            <div className="button" onClick={ () => setAllIsComplete(true) }>Check All</div>
-          ) : (
-            <div className="button" onClick={ () => setAllIsComplete(false) }>Uncheck All</div>
-          )}
+
+      { tasks.length > 0 ? (
+        <div className="check-all-container">
+          <div className='button-group'>
+            { !allIsCompleted ? (
+              <div className="button" onClick={ () => setAllIsComplete(true) }>Check All</div>
+            ) : (
+              <div className="button" onClick={ () => setAllIsComplete(false) }>Uncheck All</div>
+            )}
+          </div>
+
+          <span>{ tasks.length } items remaining</span>
         </div>
+      ) : (
+        <NoTodo  />
+      )}
 
-        <span>{ tasks.length } items remaining</span>
-      </div>
-
-      {/* function set 1 */}
       <div className="other-buttons-container">
         <div>
           <button
