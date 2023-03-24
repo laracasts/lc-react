@@ -4,37 +4,24 @@ import { useMemo, useRef, useState } from 'react'
 import TodoForm from './components/TodoForm'
 import NoTodo from './components/NoTodo'
 import TodoList from './components/TodoList'
+import Features from './components/Features'
+import useLocalStorage from './hooks/useLocalStorage'
 
 function App() {
-  const [name, setName] = useState("")
+  const NameLS = 'LCReactTodoName'
+  const TaskListLS = 'LCReactTodoTaskList'
+  // const [name, setName] = useState( localStorage.getItem(NameLS).replace(/"/g, "") || "" )
+  const [name, setName] = useLocalStorage(NameLS, '')
   const nameInputEl = useRef(null)
-  const [tasks, setTask] = useState([
-    {
-      id: Math.floor(Math.random()*1000),
-      task_name: 'Laundry',
-      isCompleted: false,
-      isEditing: false,
-    },
-    {
-      id: Math.floor(Math.random()*1000),
-      task_name: 'Dishes',
-      isCompleted: true,
-      isEditing: false,
-    },
-    {
-      id: Math.floor(Math.random()*1000),
-      task_name: 'Sweep',
-      isCompleted: false,
-      isEditing: false,
-    },
-    {
-      id: Math.floor(Math.random()*1000),
-      task_name: 'Electricity',
-      isCompleted: false,
-      isEditing: false,
-    },
-  ])
+  const [tasks, setTask] = useLocalStorage(TaskListLS, [])
   const [filter, setFilter] = useState("")
+
+  // useEffect(() => {
+  //   console.log(JSON.stringify(name))
+  //   if (name.length > 0) {
+  //     localStorage.setItem(NameLS, JSON.stringify(name))
+  //   }
+  // }, [name])
 
   function calculateRemainingTask() {
     const a = tasks.filter(task => !task.isCompleted)
@@ -67,7 +54,7 @@ function App() {
           tasks={ tasks } setTask={ setTask }
         />
 
-        { tasks.length > 0 ? (
+        { filteredTask.length > 0 ? (
           <>
             <TodoList
               tasks={ filteredTask } setTask={ setTask }
@@ -78,6 +65,11 @@ function App() {
         ) : (
           <NoTodo />
         )}
+        <Features
+          tasks={ filteredTask } setTask={ setTask }
+          filter={ filter } setFilter={ setFilter }
+          taskCount={ taskCount }
+        />
       </div>
     </div>
   )

@@ -1,26 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import NoTodo from './NoTodo'
-
-function TodoList({ tasks, setTask, filter, setFilter, taskCount }) {
-  const [allIsCompleted, setAllIsCompleted] = useState(false)
-
-  useEffect( () => {
-    setAllIsCompleted(Object.values(tasks).every( task => task.isCompleted === true))
-  }, [tasks])
+function TodoList({ tasks, setTask, filter, setFilter }) {
 
   function deleteTask(id) {
     console.log(`delete task: ${id}`)
     setTask(tasks.filter(task => task.id !== id));
-  }
-
-  function deleteAllCompleted() {
-    console.log("delete all competed task")
-    setTask(tasks.filter(task => !task.isCompleted === true))
-  }
-
-  function setAllIsComplete(status) {
-    console.log(`toggle ${status} to all task IsComplete`)
-    setTask(tasks.map(task => { return { ...task, isCompleted: status } }))
   }
 
   function setIsComplete(id) {
@@ -99,48 +81,6 @@ function TodoList({ tasks, setTask, filter, setFilter, taskCount }) {
           </li>
         ))}
       </ul>
-
-      { tasks.length > 0 ? (
-        <div className="check-all-container">
-          <div className='button-group'>
-            { !allIsCompleted ? (
-              <div className="button" onClick={ () => setAllIsComplete(true) }>Check All</div>
-            ) : (
-              <div className="button" onClick={ () => setAllIsComplete(false) }>Uncheck All</div>
-            )}
-          </div>
-
-          <span>{ taskCount.remaining } / { taskCount.all } items</span>
-        </div>
-      ) : (
-        <NoTodo  />
-      )}
-
-      <div className="other-buttons-container">
-        <div>
-          <button
-            className={`button filter-button ${ filter === "" ? "filter-button-active" : ""}`}
-            onClick={ () => setFilter("")}
-          >
-            All
-          </button>
-          <button
-            className={`button filter-button ${ filter === false ? "filter-button-active" : ""}`}
-            onClick={ () => setFilter(false)}
-          >
-            Active
-          </button>
-          <button
-            className={`button filter-button ${ filter === true ? "filter-button-active" : ""}`}
-            onClick={ () => setFilter(true)}
-          >
-            Completed
-          </button>
-        </div>
-        <div>
-          <button className="button" onClick={ () => deleteAllCompleted() }>Clear completed</button>
-        </div>
-      </div>
     </section>
   )
 }
