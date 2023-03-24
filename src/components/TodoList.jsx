@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-function TodoList({ tasks, setTask }) {
+function TodoList({ tasks, setTask, filter, setFilter }) {
+  const [allIsCompleted, setAllIsCompleted] = useState(false)
+
+  useEffect( () => {
+    setAllIsCompleted(Object.values(tasks).every( task => task.isCompleted === true))
+  }, [tasks])
 
   function deleteTask(id) {
     setTask(tasks.filter(task => task.id !== id));
+  }
+
+  function deleteAllCompleted() {
+    setTask(tasks.filter(task => !task.isCompleted === true))
+  }
+
+  function setAllIsComplete(status) {
+    setTask(tasks.map(task => { return { ...task, isCompleted: status } }))
   }
 
   function setIsComplete(id) {
@@ -85,8 +98,12 @@ function TodoList({ tasks, setTask }) {
       
       {/* function set 1 */}
       <div className="check-all-container">
-        <div>
-          <div className="button">Check All</div>
+        <div className='button-group'>
+          { !allIsCompleted ? (
+            <div className="button" onClick={ () => setAllIsComplete(true) }>Check All</div>
+          ) : (
+            <div className="button" onClick={ () => setAllIsComplete(false) }>Uncheck All</div>
+          )}
         </div>
 
         <span>{ tasks.length } items remaining</span>
@@ -95,14 +112,27 @@ function TodoList({ tasks, setTask }) {
       {/* function set 1 */}
       <div className="other-buttons-container">
         <div>
-          <button className="button filter-button filter-button-active">
+          <button
+            className={`button filter-button ${ filter === "" ? "filter-button-active" : ""}`}
+            onClick={ () => setFilter("")}
+          >
             All
           </button>
-          <button className="button filter-button">Active</button>
-          <button className="button filter-button">Completed</button>
+          <button
+            className={`button filter-button ${ filter === false ? "filter-button-active" : ""}`}
+            onClick={ () => setFilter(false)}
+          >
+            Active
+          </button>
+          <button
+            className={`button filter-button ${ filter === true ? "filter-button-active" : ""}`}
+            onClick={ () => setFilter(true)}
+          >
+            Completed
+          </button>
         </div>
         <div>
-          <button className="button">Clear completed</button>
+          <button className="button" onClick={ () => deleteAllCompleted() }>Clear completed</button>
         </div>
       </div>
     </section>

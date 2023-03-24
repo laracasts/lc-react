@@ -15,6 +15,7 @@ function TodoForm({ tasks, setTask }) {
       e.target.inputTask.value = ""
     }
   }
+  
   return (
     <form onSubmit={ addTodo }>
       <input

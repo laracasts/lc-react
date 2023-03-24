@@ -1,9 +1,9 @@
-import '../reset.css';
-import '../App.css';
+import './reset.css';
+import './App.css';
 import { useState } from 'react';
-import TodoForm from './TodoForm';
-import NoTodo from './NoTodo';
-import TodoList from './TodoList';
+import TodoForm from './components/TodoForm';
+import NoTodo from './components/NoTodo';
+import TodoList from './components/TodoList';
 
 function App() {
   const [tasks, setTask] = useState([
@@ -32,17 +32,26 @@ function App() {
       isEditing: false,
     },
   ])
+  const [filter, setFilter] = useState([true || false])
+
+  const filteredTask = tasks.filter(task => !task.isCompleted !== filter)
 
   return (
     <div className="todo-app-container">
       <div className="todo-app">
         <h2>Todo App</h2>
         {/* Adding Form */}
-        <TodoForm tasks={ tasks } setTask={ setTask }/>
+        <TodoForm
+          tasks={ tasks } setTask={ setTask }
+
+        />
 
         { tasks.length > 0 ? (
           <>
-            <TodoList tasks={ tasks } setTask={ setTask }/>
+            <TodoList
+              tasks={ filteredTask } setTask={ setTask }
+              filter={ filter } setFilter={ setFilter }
+            />
           </>
         ) : (
           <NoTodo />
