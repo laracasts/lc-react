@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { TodosContext } from '../context/TodosContext'
 import useToggle from '../hooks/useToggle'
 
-function Features({ tasks, setTask, filter, setFilter, taskCount }) {
+function Features({ filter, setFilter, taskCount }) {
+
+  const { tasks, setTask } = useContext(TodosContext)
+
   const [isFeaturesOneVisible, setIsFeaturesOneVisible] = useToggle(true)
   const [isFeaturesTwoVisible, setIsFeaturesTwoVisible] = useToggle(true)
 

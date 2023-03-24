@@ -1,4 +1,9 @@
-function TodoForm({ tasks, setTask }) {
+import { useContext } from "react";
+import { TodosContext } from "../context/TodosContext";
+
+function TodoForm() {
+
+  const { tasks, setTask } = useContext(TodosContext)
 
   function addTodo(e) {
     e.preventDefault();
@@ -15,7 +20,7 @@ function TodoForm({ tasks, setTask }) {
       e.target.inputTask.value = ""
     }
   }
-  
+
   return (
     <form onSubmit={ addTodo }>
       <input

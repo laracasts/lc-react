@@ -1,4 +1,9 @@
-function TodoList({ tasks, setTask, filter, setFilter }) {
+import { useContext } from "react";
+import { TodosContext } from "../context/TodosContext";
+
+function TodoList({ filteredTask }) {
+
+  const { tasks, setTask } = useContext(TodosContext)
 
   function deleteTask(id) {
     console.log(`delete task: ${id}`)
@@ -30,7 +35,7 @@ function TodoList({ tasks, setTask, filter, setFilter }) {
   return (
     <section>
       <ul className="todo-list">
-        { tasks.map((task, index) => (
+        { filteredTask.map((task, index) => (
           <li key={ task.id } className="todo-item-container">
             <div className="todo-item">
               <input type="checkbox"
