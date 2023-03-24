@@ -76,6 +76,8 @@ h2 {
 
 .line-through {
   text-decoration: line-through;
+  color: gray;
+  font-size: 15px
 }
 
 .x-button {
@@ -134,4 +136,14 @@ h2 {
   margin-top: 22px;
   padding-top: 16px;
   border-top: 1px solid lightgray;
+}
+
+.no-todos-container {
+  width: 300px;
+  margin: 30px auto;
+}
+
+.no-todos-container p {
+  margin-top: 20px;
+  text-align: center;
 }
