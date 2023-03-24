@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import NoTodo from './NoTodo'
 
-function TodoList({ tasks, setTask, filter, setFilter }) {
+function TodoList({ tasks, setTask, filter, setFilter, taskCount }) {
   const [allIsCompleted, setAllIsCompleted] = useState(false)
 
   useEffect( () => {
@@ -110,7 +110,7 @@ function TodoList({ tasks, setTask, filter, setFilter }) {
             )}
           </div>
 
-          <span>{ tasks.length } items remaining</span>
+          <span>{ taskCount.remaining } / { taskCount.all } items</span>
         </div>
       ) : (
         <NoTodo  />
