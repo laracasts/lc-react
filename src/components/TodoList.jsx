@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { TodosContext } from "../context/TodosContext";
 
 function TodoList({ filteredTask }) {
@@ -34,58 +35,67 @@ function TodoList({ filteredTask }) {
 
   return (
     <section>
-      <ul className="todo-list">
+      <TransitionGroup
+        component="ul"
+        className="todo-list"
+      >
         { filteredTask.map((task, index) => (
-          <li key={ task.id } className="todo-item-container">
-            <div className="todo-item">
-              <input type="checkbox"
-                onClick={ () => setIsComplete(task.id) }
-                checked={ task.isCompleted ? true : false }
-                onChange={ () => {} }
-              />
-              { !task.isEditing ? (
-              <span
-                onDoubleClick={ () => setIsEditing(task.id) }
-                className={ `todo-item-label ${ task.isCompleted ? 'line-through' : '' }` }
-              >
-                { task.task_name }
-              </span>
-              ) : (
-                <input
-                  type="text"
-                  defaultValue={ task.task_name }
-                  className='todo-item-input'
-                  onBlur={ e => updateToDo(e, task.id)}
-                  onKeyDown={ e => {
-                    if (e.key === 'Enter') {
-                      updateToDo(e, task.id)
-                    } else if (e.key === 'Escape') {
-                      updateToDo(e, "")
-                    }
-                  }}
+          <CSSTransition
+            key={ task.id }
+            timeout={ 300 }
+            classNames="slide-horizontal"
+          >
+            <li key={ task.id } className="todo-item-container">
+              <div className="todo-item">
+                <input type="checkbox"
+                  onClick={ () => setIsComplete(task.id) }
+                  checked={ task.isCompleted ? true : false }
                   onChange={ () => {} }
-                  autoFocus
                 />
-              )}
-            </div>
-            <button onClick={ () => deleteTask(task.id) } className="x-button">
-              <svg
-                className="x-button-icon"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={ 2 }
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </li>
+                { !task.isEditing ? (
+                <span
+                  onDoubleClick={ () => setIsEditing(task.id) }
+                  className={ `todo-item-label ${ task.isCompleted ? 'line-through' : '' }` }
+                >
+                  { task.task_name }
+                </span>
+                ) : (
+                  <input
+                    type="text"
+                    defaultValue={ task.task_name }
+                    className='todo-item-input'
+                    onBlur={ e => updateToDo(e, task.id)}
+                    onKeyDown={ e => {
+                      if (e.key === 'Enter') {
+                        updateToDo(e, task.id)
+                      } else if (e.key === 'Escape') {
+                        updateToDo(e, "")
+                      }
+                    }}
+                    onChange={ () => {} }
+                    autoFocus
+                  />
+                )}
+              </div>
+              <button onClick={ () => deleteTask(task.id) } className="x-button">
+                <svg
+                  className="x-button-icon"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={ 2 }
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </li>
+          </CSSTransition>
         ))}
-      </ul>
+      </TransitionGroup>
     </section>
   )
 }

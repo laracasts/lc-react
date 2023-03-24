@@ -1,6 +1,7 @@
 import './reset.css'
 import './App.css'
 import { useMemo, useRef, useState } from 'react'
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 import TodoForm from './components/TodoForm'
 import NoTodo from './components/NoTodo'
 import TodoList from './components/TodoList'
@@ -41,20 +42,38 @@ function App() {
                 onChange={ e => setName(e.target.value) }
               />
             </form>
-            { name && <p className="name-label">Hello, { name } </p> }
+            <CSSTransition
+              in={ name.length > 0}
+              timeout={ 300 }
+              classNames='slide-vertical'
+              unmountOnExit
+            >
+              <p className="name-label">Hello, { name } </p>
+            </CSSTransition>
           </div>
           <h2>Todo App</h2>
           <TodoForm />
 
-          { filteredTask.length > 0 ? (
-            <>
-              <TodoList
-                filteredTask={ filteredTask }
-              />
-            </>
-          ) : (
-            <NoTodo />
-          )}
+          <SwitchTransition
+            mode="out-in"
+          >
+            <CSSTransition
+              key={ filteredTask.length > 0 }
+              timeout={ 300 }
+              classNames='slide-vertical'
+              unmountOnExit
+            >
+              { filteredTask.length > 0 ? (
+                <>
+                  <TodoList
+                    filteredTask={ filteredTask }
+                  />
+                </>
+              ) : (
+                <NoTodo />
+              )}
+            </CSSTransition>
+          </SwitchTransition>
           <Features
             filter={ filter } setFilter={ setFilter }
             taskCount={ taskCount }

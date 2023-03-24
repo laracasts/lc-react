@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { CSSTransition } from 'react-transition-group'
 import { TodosContext } from '../context/TodosContext'
 import useToggle from '../hooks/useToggle'
 
@@ -27,11 +28,17 @@ function Features({ filter, setFilter, taskCount }) {
 
   return (
     <section>
-      <div className="toggle-container">
+      <div className="toggles-container">
         <button onClick={setIsFeaturesOneVisible} className="button"> Feature 1 </button>
         <button onClick={setIsFeaturesTwoVisible} className="button"> Feature 2 </button>
       </div>
-      { isFeaturesOneVisible && tasks.length > 0 && (
+
+      <CSSTransition
+        in={isFeaturesOneVisible && tasks.length > 0}
+        timeout={300}
+        classNames="slide-vertical"
+        unmountOnExit
+      >
         <div className="check-all-container">
           <div className='button-group'>
             { !allIsCompleted ? (
@@ -43,8 +50,13 @@ function Features({ filter, setFilter, taskCount }) {
 
           <span>{ taskCount.remaining } / { taskCount.all } items</span>
         </div>
-      )}
-      { isFeaturesTwoVisible && (
+      </CSSTransition>
+      <CSSTransition
+        in={isFeaturesTwoVisible}
+        timeout={300}
+        classNames="slide-vertical"
+        unmountOnExit
+      >
         <div className="other-buttons-container">
           <div>
             <button
@@ -70,7 +82,8 @@ function Features({ filter, setFilter, taskCount }) {
             <button className="button" onClick={ () => deleteAllCompleted() }>Clear completed</button>
           </div>
         </div>
-      )}
+      </CSSTransition>
+
     </section>
   )
 }
